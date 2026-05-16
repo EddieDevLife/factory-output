@@ -1,0 +1,110 @@
+{
+  "schema_version": 2,
+  "status": "failed",
+  "checks": [
+    {
+      "name": "generated_script_exists",
+      "passed": true,
+      "detail": "Arquivo output/sistema_gerado.py encontrado.",
+      "blocking": true
+    },
+    {
+      "name": "python_syntax",
+      "passed": true,
+      "detail": "Sintaxe Python valida.",
+      "blocking": true
+    },
+    {
+      "name": "python_project_py_compile",
+      "passed": true,
+      "detail": "Todos os arquivos Python compilam com py_compile.",
+      "blocking": true
+    },
+    {
+      "name": "generated_module_imports",
+      "passed": true,
+      "detail": "Modulo gerado importado com sucesso.",
+      "blocking": true
+    },
+    {
+      "name": "generated_imports_resolve",
+      "passed": true,
+      "detail": "Importacoes resolvidas ou declaradas em requirements.",
+      "blocking": true
+    },
+    {
+      "name": "generated_has_docstring_or_cli_help",
+      "passed": true,
+      "detail": "Artefato possui docstring de modulo, docstring em main ou ajuda de CLI.",
+      "blocking": true
+    },
+    {
+      "name": "generated_script_has_no_embedded_pytest",
+      "passed": true,
+      "detail": "Arquivo gerado nao contem testes Pytest embutidos.",
+      "blocking": true
+    },
+    {
+      "name": "pydantic_v2_compatible_patterns",
+      "passed": true,
+      "detail": "Padroes Pydantic 2 compatíveis.",
+      "blocking": true
+    },
+    {
+      "name": "update_model_optional_fields_default_none",
+      "passed": true,
+      "detail": "Campos Optional de modelos Update usam default None.",
+      "blocking": true
+    },
+    {
+      "name": "generated_tests_have_meaningful_assertions",
+      "passed": true,
+      "detail": "8 testes e 25 asserts significativos encontrados.",
+      "blocking": true
+    },
+    {
+      "name": "generated_tests_pass",
+      "passed": false,
+      "detail": "b\\n  --url URL        URL do produto para monitorar\\n', stderr='').stdout\nFAILED tests/test_codigo.py::test_falha_coleta_precos - AssertionError: assert 'Falha ao obter preco' in '2026-05-16 01:53:41,522 INFO: Iniciando sistema de monitoramento de preço.\\n2026-05-16 01:53:41,524 INFO: Usando limi...OR: Não foi possível obter o preço atual do produto.\\nFalha ao obter preço do produto. Veja logs para mais detalhes.\\n'\n========================= 3 failed, 5 passed in 0.54s ==========================",
+      "blocking": true
+    },
+    {
+      "name": "code_style_black",
+      "passed": true,
+      "detail": "black nao instalado; check de estilo ignorado.",
+      "blocking": false
+    },
+    {
+      "name": "type_check_mypy",
+      "passed": true,
+      "detail": "mypy nao instalado; type check ignorado sem bloquear a entrega.",
+      "blocking": false
+    },
+    {
+      "name": "api_tests_use_testclient",
+      "passed": false,
+      "detail": "Testes de API devem usar TestClient sem servidor externo.",
+      "blocking": true
+    }
+  ],
+  "failed_checks": [
+    {
+      "name": "generated_tests_pass",
+      "passed": false,
+      "detail": "b\\n  --url URL        URL do produto para monitorar\\n', stderr='').stdout\nFAILED tests/test_codigo.py::test_falha_coleta_precos - AssertionError: assert 'Falha ao obter preco' in '2026-05-16 01:53:41,522 INFO: Iniciando sistema de monitoramento de preço.\\n2026-05-16 01:53:41,524 INFO: Usando limi...OR: Não foi possível obter o preço atual do produto.\\nFalha ao obter preço do produto. Veja logs para mais detalhes.\\n'\n========================= 3 failed, 5 passed in 0.54s ==========================",
+      "blocking": true
+    },
+    {
+      "name": "api_tests_use_testclient",
+      "passed": false,
+      "detail": "Testes de API devem usar TestClient sem servidor externo.",
+      "blocking": true
+    }
+  ],
+  "warnings": [],
+  "summary": {
+    "total_checks": 14,
+    "failed_checks": 2,
+    "warnings": 0
+  }
+}
