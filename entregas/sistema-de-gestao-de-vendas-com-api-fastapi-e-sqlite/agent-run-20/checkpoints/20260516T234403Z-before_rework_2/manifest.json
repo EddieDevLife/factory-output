@@ -1,0 +1,17 @@
+{
+  "label": "before_rework_2",
+  "created_at": "2026-05-16T23:44:03.725427Z",
+  "path": "/home/runner/work/factory-IA/factory-IA/minha-fabrica-agentes/output/checkpoints/20260516T234403Z-before_rework_2",
+  "files": [
+    "output/README_ATUALIZADO.md",
+    "output/arquitetura.md",
+    "output/git_status.json",
+    "output/git_workflow.md",
+    "output/revisao_final.md",
+    "output/sistema_gerado.py",
+    "output/testes.md",
+    "output/validation_report.json",
+    "output/validation_report.md",
+    "tests/test_codigo.py"
+  ]
+}
