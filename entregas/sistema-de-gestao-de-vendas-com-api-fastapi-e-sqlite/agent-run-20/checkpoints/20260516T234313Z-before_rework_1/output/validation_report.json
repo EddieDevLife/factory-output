@@ -1,0 +1,104 @@
+{
+  "schema_version": 2,
+  "status": "failed",
+  "checks": [
+    {
+      "name": "generated_script_exists",
+      "passed": true,
+      "detail": "Arquivo output/sistema_gerado.py encontrado.",
+      "blocking": true
+    },
+    {
+      "name": "python_syntax",
+      "passed": true,
+      "detail": "Sintaxe Python valida.",
+      "blocking": true
+    },
+    {
+      "name": "python_project_py_compile",
+      "passed": true,
+      "detail": "Todos os arquivos Python compilam com py_compile.",
+      "blocking": true
+    },
+    {
+      "name": "generated_module_imports",
+      "passed": true,
+      "detail": "Modulo gerado importado com sucesso.",
+      "blocking": true
+    },
+    {
+      "name": "generated_imports_resolve",
+      "passed": true,
+      "detail": "Importacoes resolvidas ou declaradas em requirements.",
+      "blocking": true
+    },
+    {
+      "name": "generated_has_docstring_or_cli_help",
+      "passed": true,
+      "detail": "Artefato possui docstring de modulo, docstring em main ou ajuda de CLI.",
+      "blocking": true
+    },
+    {
+      "name": "generated_script_has_no_embedded_pytest",
+      "passed": true,
+      "detail": "Arquivo gerado nao contem testes Pytest embutidos.",
+      "blocking": true
+    },
+    {
+      "name": "pydantic_v2_compatible_patterns",
+      "passed": true,
+      "detail": "Padroes Pydantic 2 compatíveis.",
+      "blocking": true
+    },
+    {
+      "name": "update_model_optional_fields_default_none",
+      "passed": true,
+      "detail": "Campos Optional de modelos Update usam default None.",
+      "blocking": true
+    },
+    {
+      "name": "generated_tests_have_meaningful_assertions",
+      "passed": true,
+      "detail": "13 testes e 27 asserts significativos encontrados.",
+      "blocking": true
+    },
+    {
+      "name": "generated_tests_pass",
+      "passed": false,
+      "detail": "Error: module 'sistema_gerado' has no attribute 'Base'\nERROR tests/test_codigo.py::test_remover_venda_inexistente - AttributeError: module 'sistema_gerado' has no attribute 'Base'\nERROR tests/test_codigo.py::test_validacoes_criacao - AttributeError: module 'sistema_gerado' has no attribute 'Base'\nERROR tests/test_codigo.py::test_validacoes_atualizacao - AttributeError: module 'sistema_gerado' has no attribute 'Base'\n==================== 1 failed, 1 passed, 11 errors in 1.63s ====================",
+      "blocking": true
+    },
+    {
+      "name": "code_style_black",
+      "passed": true,
+      "detail": "black nao instalado; check de estilo ignorado.",
+      "blocking": false
+    },
+    {
+      "name": "type_check_mypy",
+      "passed": true,
+      "detail": "mypy nao instalado; type check ignorado sem bloquear a entrega.",
+      "blocking": false
+    },
+    {
+      "name": "api_tests_use_testclient",
+      "passed": true,
+      "detail": "Testes de API devem usar TestClient sem servidor externo.",
+      "blocking": true
+    }
+  ],
+  "failed_checks": [
+    {
+      "name": "generated_tests_pass",
+      "passed": false,
+      "detail": "Error: module 'sistema_gerado' has no attribute 'Base'\nERROR tests/test_codigo.py::test_remover_venda_inexistente - AttributeError: module 'sistema_gerado' has no attribute 'Base'\nERROR tests/test_codigo.py::test_validacoes_criacao - AttributeError: module 'sistema_gerado' has no attribute 'Base'\nERROR tests/test_codigo.py::test_validacoes_atualizacao - AttributeError: module 'sistema_gerado' has no attribute 'Base'\n==================== 1 failed, 1 passed, 11 errors in 1.63s ====================",
+      "blocking": true
+    }
+  ],
+  "warnings": [],
+  "summary": {
+    "total_checks": 14,
+    "failed_checks": 1,
+    "warnings": 0
+  }
+}
