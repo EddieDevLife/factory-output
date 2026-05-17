@@ -1,0 +1,9 @@
+{
+  "status": "accepted",
+  "confidence": "medium",
+  "reason": "Escopo compativel com MVP simples ou sem sinais fortes de risco.",
+  "recommended_action": "Executar pipeline padrao com validacao automatica e limite de retrabalho.",
+  "matched_terms": [
+    "script"
+  ]
+}
