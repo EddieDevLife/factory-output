@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Painel - Sistema de Gestão de Vendas (Tester)</title>
+    <style>
+      :root{
+        --bg:#0b1020; --panel:#111834; --panel2:#0f1530; --text:#e8ecff; --muted:#a7b0dd;
+        --border:#26306a; --accent:#6aa7ff; --accent2:#7cffd8; --danger:#ff6a6a; --warn:#ffd36a;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      }
+      *{box-sizing:border-box}
+      body{margin:0;background:radial-gradient(1200px 600px at 10% 10%, #17235a 0%, var(--bg) 55%), var(--bg); color:var(--text); font-family:var(--sans)}
+      a{color:var(--accent)}
+      header{padding:18px 18px 10px; border-bottom:1px solid rgba(38,48,106,.6); background:linear-gradient(180deg, rgba(17,24,52,.9), rgba(17,24,52,.45))}
+      h1{margin:0;font-size:16px;letter-spacing:.2px}
+      .sub{margin-top:6px;color:var(--muted);font-size:12px}
+      main{display:grid; grid-template-columns: 420px 1fr; gap:14px; padding:14px; align-items:start}
+      @media (max-width: 980px){ main{grid-template-columns:1fr} }
+      .card{background:rgba(17,24,52,.72); border:1px solid rgba(38,48,106,.75); border-radius:14px; overflow:hidden; box-shadow: 0 10px 30px rgba(0,0,0,.25)}
+      .card .hd{padding:12px 12px 10px; border-bottom:1px solid rgba(38,48,106,.55); display:flex; justify-content:space-between; align-items:center; gap:12px}
+      .card .hd strong{font-size:12px; letter-spacing:.35px; text-transform:uppercase; color:var(--muted)}
+      .card .bd{padding:12px}
+      label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
+      input, select, textarea{
+        width:100%; border-radius:10px; border:1px solid rgba(38,48,106,.85);
+        background:rgba(15,21,48,.8); color:var(--text); padding:10px 10px;
+        outline:none;
+      }
+      textarea{min-height:120px; font-family:var(--mono); font-size:12px; line-height:1.45; resize:vertical}
+      .row{display:grid; grid-template-columns: 120px 1fr; gap:10px}
+      .row2{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+      .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+      button{
+        border:1px solid rgba(38,48,106,.95);
+        background:linear-gradient(180deg, rgba(106,167,255,.22), rgba(106,167,255,.07));
+        color:var(--text); padding:10px 12px; border-radius:10px; cursor:pointer; font-weight:600;
+      }
+      button.secondary{background:linear-gradient(180deg, rgba(124,255,216,.18), rgba(124,255,216,.06))}
+      button.danger{background:linear-gradient(180deg, rgba(255,106,106,.18), rgba(255,106,106,.06))}
+      button.ghost{background:transparent}
+      button:disabled{opacity:.55; cursor:not-allowed}
+      .pill{
+        font-family:var(--mono); font-size:11px; padding:6px 8px; border-radius:999px;
+        border:1px solid rgba(38,48,106,.8); background:rgba(15,21,48,.6); color:var(--muted)
+      }
+      .kvs{display:flex; gap:8px; flex-wrap:wrap}
+      .hint{color:var(--muted); font-size:12px; line-height:1.35}
+      pre{
+        margin:0; padding:12px; background:rgba(15,21,48,.85);
+        border:1px solid rgba(38,48,106,.65); border-radius:12px; overflow:auto;
+        font-family:var(--mono); font-size:12px; line-height:1.5;
+      }
+      .split{display:grid; grid-template-columns:1fr; gap:10px}
+      .statusline{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+      .ok{color:var(--accent2)}
+      .bad{color:var(--danger)}
+      .warn{color:var(--warn)}
+      .history{display:flex; flex-direction:column; gap:10px}
+      .hitem{padding:10px; border-radius:12px; border:1px solid rgba(38,48,106,.65); background:rgba(15,21,48,.62)}
+      .hitem .top{display:flex; justify-content:space-between; gap:10px; align-items:center}
+      .hitem code{font-family:var(--mono); font-size:12px}
+      .hitem .meta{color:var(--muted); font-size:11px}
+      .hitem .actions{display:flex; gap:8px; align-items:center}
+      .hitem button{padding:6px 8px; font-size:12px}
+
+      .tabs{display:flex; gap:8px; flex-wrap:wrap}
+      .tab{
+        padding:8px 10px; border-radius:999px; border:1px solid rgba(38,48,106,.85);
+        background:rgba(15,21,48,.55); color:var(--muted); cursor:pointer; font-weight:700; font-size:12px;
+      }
+      .tab.active{background:linear-gradient(180deg, rgba(106,167,255,.22), rgba(106,167,255,.07)); color:var(--text)}
+      .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+      @media (max-width: 980px){ .grid2{grid-template-columns:1fr} }
+      table{width:100%; border-collapse:separate; border-spacing:0}
+      th,td{padding:10px 10px; text-align:left; border-bottom:1px solid rgba(38,48,106,.5); font-size:12px}
+      th{color:var(--muted); font-size:11px; letter-spacing:.3px; text-transform:uppercase}
+      tr:hover td{background:rgba(15,21,48,.35)}
+      .mini{font-size:11px; color:var(--muted)}
+      .right{justify-self:end}
+      .metric{display:flex; flex-direction:column; gap:6px; padding:10px; border-radius:12px; border:1px solid rgba(38,48,106,.65); background:rgba(15,21,48,.62)}
+      .metric b{font-size:14px}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Painel — Sistema de Gestão de Vendas</h1>
+      <div class="sub">
+        Visualize <span class="pill">Produtos</span>, <span class="pill">Clientes</span> e <span class="pill">Vendas</span> e também faça requisições livres (usa <span class="pill">fetch</span> e mantém histórico no <span class="pill">localStorage</span>).
+      </div>
+    </header>
+
+    <main>
+      <section class="card">
+        <div class="hd">
+          <strong>Requisição</strong>
+          <span class="pill" id="originPill"></span>
+        </div>
+        <div class="bd">
+          <label for="baseUrl">Base URL</label>
+          <input id="baseUrl" placeholder="http://127.0.0.1:8000" />
+          <div class="hint" style="margin-top:8px">
+            Dica: se você abrir este arquivo via <span class="pill">/tester</span> no próprio FastAPI, pode deixar vazio para usar a mesma origem.
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <div>
+              <label for="method">Método</label>
+              <select id="method">
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>PATCH</option>
+                <option>DELETE</option>
+              </select>
+            </div>
+            <div>
+              <label for="path">Path</label>
+              <input id="path" placeholder="/clientes/" />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="authToken">Bearer Token (opcional)</label>
+              <input id="authToken" placeholder="eyJhbGciOi..." />
+            </div>
+            <div>
+              <label for="timeoutMs">Timeout (ms)</label>
+              <input id="timeoutMs" inputmode="numeric" placeholder="15000" />
+            </div>
+          </div>
+
+          <label for="headers">Headers (JSON)</label>
+          <textarea id="headers" spellcheck="false" placeholder='{"Content-Type":"application/json"}'></textarea>
+
+          <label for="body">Body (JSON)</label>
+          <textarea id="body" spellcheck="false" placeholder='{"nome":"Cliente 1","email":"cliente1@exemplo.com"}'></textarea>
+
+          <div class="btns">
+            <button id="sendBtn">Enviar</button>
+            <button id="saveBtn" class="secondary">Salvar no histórico</button>
+            <button id="clearBtn" class="ghost">Limpar</button>
+          </div>
+
+          <label>Atalhos rápidos</label>
+          <div class="kvs">
+            <button class="ghost" data-preset="listar_clientes">GET /clientes/</button>
+            <button class="ghost" data-preset="criar_cliente">POST /clientes/</button>
+            <button class="ghost" data-preset="listar_produtos">GET /produtos/</button>
+            <button class="ghost" data-preset="criar_produto">POST /produtos/</button>
+            <button class="ghost" data-preset="listar_vendas">GET /vendas/</button>
+            <button class="ghost" data-preset="criar_venda">POST /vendas/</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="split">
+        <section class="card">
+          <div class="hd">
+            <strong>Gestão</strong>
+            <div class="tabs">
+              <button class="tab active" data-tab="produtos">Produtos</button>
+              <button class="tab" data-tab="clientes">Clientes</button>
+              <button class="tab" data-tab="vendas">Vendas</button>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="grid2" style="margin-bottom:10px">
+              <div class="metric">
+                <div class="mini">Total de vendas (itens)</div>
+                <b id="metricItens">—</b>
+              </div>
+              <div class="metric">
+                <div class="mini">Faturamento estimado</div>
+                <b id="metricFat">—</b>
+              </div>
+            </div>
+
+            <div id="tab_produtos">
+              <div class="statusline" style="margin-bottom:10px">
+                <button id="reloadProdutosBtn" class="secondary">Atualizar lista</button>
+                <span class="mini">Clique em um produto para preencher a venda.</span>
+              </div>
+              <div class="grid2">
+                <div class="card" style="box-shadow:none">
+                  <div class="hd"><strong>Cadastro</strong></div>
+                  <div class="bd">
+                    <label for="pNome">Nome</label>
+                    <input id="pNome" placeholder="Ex: Teclado" />
+                    <label for="pPreco">Preço</label>
+                    <input id="pPreco" inputmode="decimal" placeholder="Ex: 199.90" />
+                    <div class="btns">
+                      <button id="criarProdutoBtn" class="secondary">Criar produto</button>
+                    </div>
+                    <div class="hint">Rota: <span class="pill">POST /produtos/</span></div>
+                  </div>
+                </div>
+                <div class="card" style="box-shadow:none">
+                  <div class="hd"><strong>Lista</strong></div>
+                  <div class="bd">
+                    <table>
+                      <thead>
+                        <tr><th>ID</th><th>Produto</th><th class="right">Preço</th></tr>
+                      </thead>
+                      <tbody id="produtosTbody"></tbody>
+                    </table>
+                    <div class="hint" id="produtosEmpty" style="margin-top:10px; display:none">Nenhum produto cadastrado.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab_clientes" style="display:none">
+              <div class="statusline" style="margin-bottom:10px">
+                <button id="reloadClientesBtn" class="secondary">Atualizar lista</button>
+                <span class="mini">Clique em um cliente para preencher a venda.</span>
+              </div>
+              <div class="grid2">
+                <div class="card" style="box-shadow:none">
+                  <div class="hd"><strong>Cadastro</strong></div>
+                  <div class="bd">
+                    <label for="cNome">Nome</label>
+                    <input id="cNome" placeholder="Ex: Maria Silva" />
+                    <label for="cEmail">Email</label>
+                    <input id="cEmail" placeholder="maria@exemplo.com" />
+                    <div class="btns">
+                      <button id="criarClienteBtn" class="secondary">Criar cliente</button>
+                    </div>
+                    <div class="hint">Rota: <span class="pill">POST /clientes/</span></div>
+                  </div>
+                </div>
+                <div class="card" style="box-shadow:none">
+                  <div class="hd"><strong>Lista</strong></div>
+                  <div class="bd">
+                    <table>
+                      <thead>
+                        <tr><th>ID</th><th>Cliente</th><th>Email</th></tr>
+                      </thead>
+                      <tbody id="clientesTbody"></tbody>
+                    </table>
+                    <div class="hint" id="clientesEmpty" style="margin-top:10px; display:none">Nenhum cliente cadastrado.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab_vendas" style="display:none">
+              <div class="statusline" style="margin-bottom:10px">
+                <button id="reloadVendasBtn" class="secondary">Atualizar lista</button>
+                <span class="mini">Crie uma venda usando cliente + produto.</span>
+              </div>
+              <div class="grid2">
+                <div class="card" style="box-shadow:none">
+                  <div class="hd"><strong>Nova venda</strong></div>
+                  <div class="bd">
+                    <div class="row2">
+                      <div>
+                        <label for="vCliente">Cliente</label>
+                        <select id="vCliente"></select>
+                      </div>
+                      <div>
+                        <label for="vProduto">Produto</label>
+                        <select id="vProduto"></select>
+                      </div>
+                    </div>
+                    <label for="vQtd">Quantidade</label>
+                    <input id="vQtd" inputmode="numeric" placeholder="1" />
+                    <div class="btns">
+                      <button id="criarVendaBtn" class="secondary">Registrar venda</button>
+                      <button id="abrirNoTesterBtn" class="ghost">Abrir no tester</button>
+                    </div>
+                    <div class="hint">Rota: <span class="pill">POST /vendas/</span></div>
+                  </div>
+                </div>
+                <div class="card" style="box-shadow:none">
+                  <div class="hd"><strong>Histórico de vendas</strong></div>
+                  <div class="bd">
+                    <table>
+                      <thead>
+                        <tr><th>ID</th><th>Cliente</th><th>Produto</th><th class="right">Qtd</th><th class="right">Total</th></tr>
+                      </thead>
+                      <tbody id="vendasTbody"></tbody>
+                    </table>
+                    <div class="hint" id="vendasEmpty" style="margin-top:10px; display:none">Nenhuma venda registrada.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="hd">
+            <strong>Resposta</strong>
+            <div class="statusline">
+              <span class="pill" id="statusPill">—</span>
+              <span class="pill" id="timePill">—</span>
+            </div>
+          </div>
+          <div class="bd">
+            <pre id="responsePre">{}</pre>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="hd">
+            <strong>Histórico</strong>
+            <button id="wipeHistoryBtn" class="danger">Apagar histórico</button>
+          </div>
+          <div class="bd">
+            <div class="hint" style="margin-bottom:10px">
+              Itens salvos localmente no seu browser. Clique em “Carregar” para preencher o formulário.
+            </div>
+            <div id="history" class="history"></div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const baseUrlEl = $("baseUrl");
+      const methodEl = $("method");
+      const pathEl = $("path");
+      const headersEl = $("headers");
+      const bodyEl = $("body");
+      const authTokenEl = $("authToken");
+      const timeoutMsEl = $("timeoutMs");
+      const sendBtn = $("sendBtn");
+      const saveBtn = $("saveBtn");
+      const clearBtn = $("clearBtn");
+      const statusPill = $("statusPill");
+      const timePill = $("timePill");
+      const responsePre = $("responsePre");
+      const originPill = $("originPill");
+      const historyEl = $("history");
+      const wipeHistoryBtn = $("wipeHistoryBtn");
+
+      const metricItens = $("metricItens");
+      const metricFat = $("metricFat");
+
+      const produtosTbody = $("produtosTbody");
+      const clientesTbody = $("clientesTbody");
+      const vendasTbody = $("vendasTbody");
+      const produtosEmpty = $("produtosEmpty");
+      const clientesEmpty = $("clientesEmpty");
+      const vendasEmpty = $("vendasEmpty");
+
+      const pNome = $("pNome");
+      const pPreco = $("pPreco");
+      const cNome = $("cNome");
+      const cEmail = $("cEmail");
+      const vCliente = $("vCliente");
+      const vProduto = $("vProduto");
+      const vQtd = $("vQtd");
+
+      const reloadProdutosBtn = $("reloadProdutosBtn");
+      const reloadClientesBtn = $("reloadClientesBtn");
+      const reloadVendasBtn = $("reloadVendasBtn");
+      const criarProdutoBtn = $("criarProdutoBtn");
+      const criarClienteBtn = $("criarClienteBtn");
+      const criarVendaBtn = $("criarVendaBtn");
+      const abrirNoTesterBtn = $("abrirNoTesterBtn");
+
+      const STORAGE_KEY = "sgv_api_tester_v1";
+
+      const cache = {
+        clientes: [],
+        produtos: [],
+        vendas: [],
+        clientesById: new Map(),
+        produtosById: new Map(),
+      };
+
+      function nowIso() {
+        return new Date().toISOString();
+      }
+
+      function safeJsonParse(str, fallback) {
+        if (!str || !str.trim()) return fallback;
+        try { return JSON.parse(str); } catch { return fallback; }
+      }
+
+      function pretty(value) {
+        try { return JSON.stringify(value, null, 2); } catch { return String(value); }
+      }
+
+      function computeBaseUrl() {
+        const raw = (baseUrlEl.value || "").trim();
+        if (raw) return raw.replace(/\/+$/, "");
+        return window.location.origin; // útil quando servido pelo FastAPI
+      }
+
+      function buildUrl() {
+        const base = computeBaseUrl();
+        let path = (pathEl.value || "").trim();
+        if (!path) path = "/";
+        if (!path.startsWith("/")) path = "/" + path;
+        return base + path;
+      }
+
+      function setStatus(status, cls) {
+        statusPill.textContent = status;
+        statusPill.classList.remove("ok", "bad", "warn");
+        if (cls) statusPill.classList.add(cls);
+      }
+
+      function setTime(ms) {
+        timePill.textContent = typeof ms === "number" ? `${ms}ms` : "—";
+      }
+
+      function showResponse(obj) {
+        responsePre.textContent = pretty(obj);
+      }
+
+      function defaultHeaders() {
+        return { "Content-Type": "application/json" };
+      }
+
+      function collectRequest() {
+        const method = (methodEl.value || "GET").toUpperCase();
+        const url = buildUrl();
+        const timeoutMs = Number((timeoutMsEl.value || "").trim() || "15000");
+        const headersObj = safeJsonParse(headersEl.value, null) ?? defaultHeaders();
+
+        const token = (authTokenEl.value || "").trim();
+        if (token) headersObj["Authorization"] = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+
+        const rawBody = (bodyEl.value || "").trim();
+        const bodyObj = safeJsonParse(rawBody, undefined);
+
+        return { method, url, timeoutMs, headersObj, rawBody, bodyObj };
+      }
+
+      async function send() {
+        const { method, url, timeoutMs, headersObj, rawBody, bodyObj } = collectRequest();
+
+        sendBtn.disabled = true;
+        setStatus("Enviando…", "warn");
+        setTime(null);
+        showResponse({ info: "enviando request…", url, method });
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+        const started = performance.now();
+        try {
+          const init = { method, headers: headersObj, signal: controller.signal };
+          if (!["GET", "HEAD"].includes(method)) {
+            init.body = rawBody ? (bodyObj !== undefined ? JSON.stringify(bodyObj) : rawBody) : "";
+          }
+
+          const res = await fetch(url, init);
+          const elapsed = Math.round(performance.now() - started);
+          setTime(elapsed);
+
+          const contentType = res.headers.get("content-type") || "";
+          let payload;
+          if (contentType.includes("application/json")) {
+            payload = await res.json();
+          } else {
+            const txt = await res.text();
+            payload = { text: txt };
+          }
+
+          const cls = res.ok ? "ok" : "bad";
+          setStatus(`${res.status} ${res.statusText}`, cls);
+          showResponse({
+            ok: res.ok,
+            status: res.status,
+            statusText: res.statusText,
+            url,
+            method,
+            headers: Object.fromEntries(res.headers.entries()),
+            data: payload,
+          });
+        } catch (err) {
+          const elapsed = Math.round(performance.now() - started);
+          setTime(elapsed);
+          const isAbort = err && (err.name === "AbortError");
+          setStatus(isAbort ? "Timeout/Abort" : "Erro", "bad");
+          showResponse({ error: String(err), url, method, at: nowIso() });
+        } finally {
+          clearTimeout(timeoutId);
+          sendBtn.disabled = false;
+        }
+      }
+
+      function clearForm() {
+        methodEl.value = "GET";
+        pathEl.value = "/";
+        headersEl.value = pretty(defaultHeaders());
+        bodyEl.value = "";
+        authTokenEl.value = "";
+        timeoutMsEl.value = "15000";
+      }
+
+      function loadState() {
+        const saved = safeJsonParse(localStorage.getItem(STORAGE_KEY), { last: null, history: [] });
+        if (saved.last) {
+          baseUrlEl.value = saved.last.baseUrl ?? "";
+          methodEl.value = saved.last.method ?? "GET";
+          pathEl.value = saved.last.path ?? "/";
+          headersEl.value = saved.last.headers ?? pretty(defaultHeaders());
+          bodyEl.value = saved.last.body ?? "";
+          authTokenEl.value = saved.last.authToken ?? "";
+          timeoutMsEl.value = saved.last.timeoutMs ?? "15000";
+        } else {
+          clearForm();
+        }
+        renderHistory(saved.history || []);
+      }
+
+      function saveLast() {
+        const state = safeJsonParse(localStorage.getItem(STORAGE_KEY), { last: null, history: [] });
+        state.last = {
+          baseUrl: (baseUrlEl.value || "").trim(),
+          method: methodEl.value,
+          path: (pathEl.value || "").trim(),
+          headers: headersEl.value,
+          body: bodyEl.value,
+          authToken: authTokenEl.value,
+          timeoutMs: (timeoutMsEl.value || "").trim(),
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      }
+
+      function saveToHistory() {
+        const state = safeJsonParse(localStorage.getItem(STORAGE_KEY), { last: null, history: [] });
+        const item = {
+          id: crypto.randomUUID(),
+          savedAt: nowIso(),
+          baseUrl: (baseUrlEl.value || "").trim(),
+          method: methodEl.value,
+          path: (pathEl.value || "").trim(),
+          headers: headersEl.value,
+          body: bodyEl.value,
+          authToken: authTokenEl.value,
+          timeoutMs: (timeoutMsEl.value || "").trim(),
+        };
+        state.history = [item, ...(state.history || [])].slice(0, 30);
+        state.last = item;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        renderHistory(state.history);
+      }
+
+      function wipeHistory() {
+        const state = safeJsonParse(localStorage.getItem(STORAGE_KEY), { last: null, history: [] });
+        state.history = [];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        renderHistory([]);
+      }
+
+      function renderHistory(items) {
+        historyEl.innerHTML = "";
+        if (!items.length) {
+          const div = document.createElement("div");
+          div.className = "hint";
+          div.textContent = "Sem itens salvos ainda.";
+          historyEl.appendChild(div);
+          return;
+        }
+        for (const it of items) {
+          const wrap = document.createElement("div");
+          wrap.className = "hitem";
+
+          const top = document.createElement("div");
+          top.className = "top";
+
+          const left = document.createElement("div");
+          left.innerHTML = `<code>${it.method} ${it.path}</code><div class="meta">${new Date(it.savedAt).toLocaleString()}</div>`;
+
+          const actions = document.createElement("div");
+          actions.className = "actions";
+
+          const loadBtn = document.createElement("button");
+          loadBtn.className = "secondary";
+          loadBtn.textContent = "Carregar";
+          loadBtn.onclick = () => {
+            baseUrlEl.value = it.baseUrl || "";
+            methodEl.value = it.method || "GET";
+            pathEl.value = it.path || "/";
+            headersEl.value = it.headers || pretty(defaultHeaders());
+            bodyEl.value = it.body || "";
+            authTokenEl.value = it.authToken || "";
+            timeoutMsEl.value = it.timeoutMs || "15000";
+            saveLast();
+          };
+
+          const delBtn = document.createElement("button");
+          delBtn.className = "ghost";
+          delBtn.textContent = "Excluir";
+          delBtn.onclick = () => {
+            const state = safeJsonParse(localStorage.getItem(STORAGE_KEY), { last: null, history: [] });
+            state.history = (state.history || []).filter((x) => x.id !== it.id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            renderHistory(state.history);
+          };
+
+          actions.appendChild(loadBtn);
+          actions.appendChild(delBtn);
+          top.appendChild(left);
+          top.appendChild(actions);
+          wrap.appendChild(top);
+
+          historyEl.appendChild(wrap);
+        }
+      }
+
+      function applyPreset(name) {
+        const presets = {
+          listar_clientes: { method: "GET", path: "/clientes/", body: "" },
+          criar_cliente: { method: "POST", path: "/clientes/", body: pretty({ nome: "Cliente 1", email: `cliente${Math.floor(Math.random()*10000)}@exemplo.com` }) },
+          listar_produtos: { method: "GET", path: "/produtos/", body: "" },
+          criar_produto: { method: "POST", path: "/produtos/", body: pretty({ nome: "Produto 1", preco: 9.9 }) },
+          listar_vendas: { method: "GET", path: "/vendas/", body: "" },
+          criar_venda: { method: "POST", path: "/vendas/", body: pretty({ cliente_id: 1, produto_id: 1, quantidade: 1 }) },
+        };
+        const p = presets[name];
+        if (!p) return;
+        methodEl.value = p.method;
+        pathEl.value = p.path;
+        bodyEl.value = p.body;
+        if (!headersEl.value.trim()) headersEl.value = pretty(defaultHeaders());
+        saveLast();
+      }
+
+      // wiring
+      sendBtn.addEventListener("click", () => { saveLast(); send(); });
+      saveBtn.addEventListener("click", () => saveToHistory());
+      clearBtn.addEventListener("click", () => { clearForm(); saveLast(); });
+      wipeHistoryBtn.addEventListener("click", () => wipeHistory());
+
+      document.querySelectorAll("[data-preset]").forEach((btn) => {
+        btn.addEventListener("click", () => applyPreset(btn.getAttribute("data-preset")));
+      });
+
+      function api(path, init = {}) {
+        const base = computeBaseUrl();
+        const url = base + path;
+        const headers = init.headers ? { ...init.headers } : {};
+        const token = (authTokenEl.value || "").trim();
+        if (token) headers["Authorization"] = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+        return fetch(url, { ...init, headers });
+      }
+
+      function moneyBRL(value) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return "—";
+        return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      }
+
+      function setTabs(active) {
+        document.querySelectorAll(".tab").forEach((t) => {
+          const on = t.getAttribute("data-tab") === active;
+          t.classList.toggle("active", on);
+        });
+        $("tab_produtos").style.display = active === "produtos" ? "" : "none";
+        $("tab_clientes").style.display = active === "clientes" ? "" : "none";
+        $("tab_vendas").style.display = active === "vendas" ? "" : "none";
+      }
+
+      async function loadProdutos() {
+        const res = await api("/produtos/");
+        if (!res.ok) throw new Error(`Erro ao listar produtos: ${res.status}`);
+        cache.produtos = await res.json();
+        cache.produtosById = new Map(cache.produtos.map((p) => [p.id, p]));
+        renderProdutos();
+        fillVendaSelects();
+      }
+
+      async function loadClientes() {
+        const res = await api("/clientes/");
+        if (!res.ok) throw new Error(`Erro ao listar clientes: ${res.status}`);
+        cache.clientes = await res.json();
+        cache.clientesById = new Map(cache.clientes.map((c) => [c.id, c]));
+        renderClientes();
+        fillVendaSelects();
+      }
+
+      async function loadVendas() {
+        const res = await api("/vendas/");
+        if (!res.ok) throw new Error(`Erro ao listar vendas: ${res.status}`);
+        cache.vendas = await res.json();
+        renderVendas();
+        updateMetrics();
+      }
+
+      function renderProdutos() {
+        produtosTbody.innerHTML = "";
+        produtosEmpty.style.display = cache.produtos.length ? "none" : "";
+        for (const p of cache.produtos) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${p.id}</td><td>${p.nome}</td><td class="right">${moneyBRL(p.preco)}</td>`;
+          tr.style.cursor = "pointer";
+          tr.title = "Clique para selecionar no formulário de venda";
+          tr.onclick = () => {
+            setTabs("vendas");
+            vProduto.value = String(p.id);
+          };
+          produtosTbody.appendChild(tr);
+        }
+      }
+
+      function renderClientes() {
+        clientesTbody.innerHTML = "";
+        clientesEmpty.style.display = cache.clientes.length ? "none" : "";
+        for (const c of cache.clientes) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${c.id}</td><td>${c.nome}</td><td>${c.email}</td>`;
+          tr.style.cursor = "pointer";
+          tr.title = "Clique para selecionar no formulário de venda";
+          tr.onclick = () => {
+            setTabs("vendas");
+            vCliente.value = String(c.id);
+          };
+          clientesTbody.appendChild(tr);
+        }
+      }
+
+      function renderVendas() {
+        vendasTbody.innerHTML = "";
+        vendasEmpty.style.display = cache.vendas.length ? "none" : "";
+
+        for (const v of cache.vendas) {
+          const c = cache.clientesById.get(v.cliente_id);
+          const p = cache.produtosById.get(v.produto_id);
+          const total = p ? Number(p.preco) * Number(v.quantidade) : NaN;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${v.id}</td>
+            <td>${c ? c.nome : `#${v.cliente_id}`}</td>
+            <td>${p ? p.nome : `#${v.produto_id}`}</td>
+            <td class="right">${v.quantidade}</td>
+            <td class="right">${moneyBRL(total)}</td>
+          `;
+          vendasTbody.appendChild(tr);
+        }
+      }
+
+      function fillVendaSelects() {
+        const currentCliente = vCliente.value;
+        const currentProduto = vProduto.value;
+
+        vCliente.innerHTML = "";
+        vProduto.innerHTML = "";
+
+        const optPlaceholderC = document.createElement("option");
+        optPlaceholderC.value = "";
+        optPlaceholderC.textContent = cache.clientes.length ? "Selecione…" : "Cadastre um cliente";
+        vCliente.appendChild(optPlaceholderC);
+
+        for (const c of cache.clientes) {
+          const opt = document.createElement("option");
+          opt.value = String(c.id);
+          opt.textContent = `#${c.id} — ${c.nome}`;
+          vCliente.appendChild(opt);
+        }
+
+        const optPlaceholderP = document.createElement("option");
+        optPlaceholderP.value = "";
+        optPlaceholderP.textContent = cache.produtos.length ? "Selecione…" : "Cadastre um produto";
+        vProduto.appendChild(optPlaceholderP);
+
+        for (const p of cache.produtos) {
+          const opt = document.createElement("option");
+          opt.value = String(p.id);
+          opt.textContent = `#${p.id} — ${p.nome} (${moneyBRL(p.preco)})`;
+          vProduto.appendChild(opt);
+        }
+
+        if (currentCliente) vCliente.value = currentCliente;
+        if (currentProduto) vProduto.value = currentProduto;
+      }
+
+      function updateMetrics() {
+        let itens = 0;
+        let fat = 0;
+        for (const v of cache.vendas) {
+          itens += Number(v.quantidade) || 0;
+          const p = cache.produtosById.get(v.produto_id);
+          if (p) fat += (Number(p.preco) || 0) * (Number(v.quantidade) || 0);
+        }
+        metricItens.textContent = String(itens);
+        metricFat.textContent = moneyBRL(fat);
+      }
+
+      async function refreshAll() {
+        try {
+          setStatus("Atualizando…", "warn");
+          await Promise.all([loadClientes(), loadProdutos()]);
+          await loadVendas();
+          setStatus("OK", "ok");
+          setTime(null);
+        } catch (err) {
+          setStatus("Erro ao atualizar", "bad");
+          showResponse({ error: String(err), at: nowIso() });
+        }
+      }
+
+      async function criarProduto() {
+        const nome = (pNome.value || "").trim();
+        const preco = Number(String(pPreco.value || "").replace(",", "."));
+        if (!nome) return alert("Informe o nome do produto.");
+        if (!Number.isFinite(preco) || preco < 0) return alert("Informe um preço válido (>= 0).");
+
+        const res = await api("/produtos/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nome, preco }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          showResponse({ status: res.status, data });
+          return alert("Falha ao criar produto. Veja em Resposta.");
+        }
+        pNome.value = "";
+        pPreco.value = "";
+        await loadProdutos();
+      }
+
+      async function criarCliente() {
+        const nome = (cNome.value || "").trim();
+        const email = (cEmail.value || "").trim();
+        if (!nome) return alert("Informe o nome do cliente.");
+        if (!email || !email.includes("@")) return alert("Informe um email válido.");
+
+        const res = await api("/clientes/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nome, email }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          showResponse({ status: res.status, data });
+          return alert("Falha ao criar cliente. Veja em Resposta.");
+        }
+        cNome.value = "";
+        cEmail.value = "";
+        await loadClientes();
+      }
+
+      async function criarVenda() {
+        const cliente_id = Number(vCliente.value);
+        const produto_id = Number(vProduto.value);
+        const quantidade = Number(vQtd.value || "1");
+        if (!Number.isFinite(cliente_id) || cliente_id <= 0) return alert("Selecione um cliente.");
+        if (!Number.isFinite(produto_id) || produto_id <= 0) return alert("Selecione um produto.");
+        if (!Number.isFinite(quantidade) || quantidade <= 0) return alert("Informe uma quantidade válida (> 0).");
+
+        const res = await api("/vendas/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cliente_id, produto_id, quantidade }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          showResponse({ status: res.status, data });
+          return alert("Falha ao registrar venda. Veja em Resposta.");
+        }
+        vQtd.value = "1";
+        await loadVendas();
+      }
+
+      function abrirVendaNoTester() {
+        const cliente_id = Number(vCliente.value);
+        const produto_id = Number(vProduto.value);
+        const quantidade = Number(vQtd.value || "1");
+        methodEl.value = "POST";
+        pathEl.value = "/vendas/";
+        headersEl.value = pretty(defaultHeaders());
+        bodyEl.value = pretty({ cliente_id, produto_id, quantidade });
+        saveLast();
+      }
+
+      // tabs
+      document.querySelectorAll(".tab").forEach((t) => {
+        t.addEventListener("click", () => setTabs(t.getAttribute("data-tab")));
+      });
+
+      reloadProdutosBtn.addEventListener("click", () => loadProdutos().catch((e) => { setStatus("Erro", "bad"); showResponse({ error: String(e) }); }));
+      reloadClientesBtn.addEventListener("click", () => loadClientes().catch((e) => { setStatus("Erro", "bad"); showResponse({ error: String(e) }); }));
+      reloadVendasBtn.addEventListener("click", () => loadVendas().catch((e) => { setStatus("Erro", "bad"); showResponse({ error: String(e) }); }));
+      criarProdutoBtn.addEventListener("click", () => criarProduto().catch((e) => { setStatus("Erro", "bad"); showResponse({ error: String(e) }); }));
+      criarClienteBtn.addEventListener("click", () => criarCliente().catch((e) => { setStatus("Erro", "bad"); showResponse({ error: String(e) }); }));
+      criarVendaBtn.addEventListener("click", () => criarVenda().catch((e) => { setStatus("Erro", "bad"); showResponse({ error: String(e) }); }));
+      abrirNoTesterBtn.addEventListener("click", () => abrirVendaNoTester());
+
+      // init
+      originPill.textContent = window.location.origin;
+      loadState();
+      setStatus("—", null);
+      showResponse({ info: "Pronto. Escolha um atalho ou monte sua request." });
+      refreshAll();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+services:
+  sgv:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - sgv-data:/app/output
+
+volumes:
+  sgv-data:
