@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Aplicativo de Tarefas</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 500px; width: 100%; }
+        h1 { color: #333; text-align: center; }
+        .tarefa { background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin-bottom: 10px; border-radius: 4px; position: relative; }
+        .tarefa.concluida { background-color: #d4edda; border-left: 5px solid #28a745; color: #6c757d; }
+        .tarefa.concluida span.titulo { text-decoration: line-through; }
+        .tarefa-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
+        .botoes-acao { margin-top: 10px; display: flex; gap: 10px; justify-content: flex-end; }
+        button { background-color: #007bff; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; margin-bottom: 10px; }
+        button:hover { background-color: #0056b3; }
+        button.btn-pequeno { width: auto; padding: 5px 10px; font-size: 14px; margin-bottom: 0; }
+        button.btn-concluir { background-color: #28a745; }
+        button.btn-concluir:hover { background-color: #218838; }
+        button.btn-remover { background-color: #dc3545; }
+        button.btn-remover:hover { background-color: #c82333; }
+        input, textarea, select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .form-group { margin-bottom: 15px; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📝 Minhas Tarefas</h1>
+    
+    <div style="background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <h3 style="margin-top: 0; text-align: center;">Adicionar Nova Tarefa</h3>
+        <input type="text" id="titulo" placeholder="Título (ex: Comprar pão)" required>
+        <textarea id="descricao" placeholder="Descrição (ex: Ir na padaria)" rows="2"></textarea>
+        <div style="display: flex; gap: 10px;">
+            <input type="date" id="prazo" required>
+            <input type="number" id="impacto" placeholder="Impacto (1 a 10)" min="1" max="10" required>
+        </div>
+        <button style="background-color: #28a745;" onclick="adicionarTarefa()">➕ Adicionar Tarefa</button>
+    </div>
+
+    <hr>
+
+    <button onclick="carregarTarefas()">🔄 Atualizar Lista da API</button>
+    <div id="lista-tarefas">
+        <p style="text-align: center; color: #888;">Carregando tarefas...</p>
+    </div>
+</div>
+
+<script>
+    // Agora a API e o site rodam no mesmo endereço, então usamos uma rota relativa
+    const API_URL = '';
+
+    window.onload = function() {
+        const amanha = new Date();
+        amanha.setDate(amanha.getDate() + 1);
+        document.getElementById('prazo').valueAsDate = amanha;
+        
+        carregarTarefas();
+    };
+
+    async function adicionarTarefa() {
+        const titulo = document.getElementById('titulo').value;
+        const descricao = document.getElementById('descricao').value;
+        const prazo = document.getElementById('prazo').value;
+        const impacto = document.getElementById('impacto').value;
+
+        if(!titulo || !prazo || !impacto) {
+            alert("Por favor, preencha o título, o prazo e o impacto.");
+            return;
+        }
+
+        const novaTarefa = {
+            titulo: titulo,
+            descricao: descricao || "Sem descrição",
+            prazo: prazo,
+            impacto: parseInt(impacto),
+            status: "pendente"
+        };
+
+        try {
+            const resposta = await fetch(`${API_URL}/tarefas`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(novaTarefa)
+            });
+
+            if(resposta.ok) {
+                document.getElementById('titulo').value = '';
+                document.getElementById('descricao').value = '';
+                document.getElementById('impacto').value = '';
+                carregarTarefas();
+            } else {
+                const erro = await resposta.json();
+                alert("Erro ao adicionar: " + JSON.stringify(erro));
+            }
+        } catch (erro) {
+            console.error("Erro:", erro);
+            alert("Erro de conexão.");
+        }
+    }
+
+    async function concluirTarefa(id) {
+        try {
+            const resposta = await fetch(`${API_URL}/tarefas/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: "concluído" })
+            });
+
+            if(resposta.ok) {
+                carregarTarefas();
+            } else {
+                alert("Erro ao concluir a tarefa.");
+            }
+        } catch (erro) {
+            console.error("Erro:", erro);
+            alert("Erro de conexão.");
+        }
+    }
+
+    async function removerTarefa(id) {
+        if(!confirm("Tem certeza que deseja remover esta tarefa?")) return;
+
+        try {
+            const resposta = await fetch(`${API_URL}/tarefas/${id}`, {
+                method: 'DELETE'
+            });
+
+            if(resposta.ok) {
+                carregarTarefas();
+            } else {
+                alert("Erro ao remover a tarefa.");
+            }
+        } catch (erro) {
+            console.error("Erro:", erro);
+            alert("Erro de conexão.");
+        }
+    }
+
+    async function carregarTarefas() {
+        const divLista = document.getElementById('lista-tarefas');
+        divLista.innerHTML = '<p style="text-align: center; color: #888;">Carregando...</p>';
+
+        try {
+            const resposta = await fetch(`${API_URL}/tarefas`);
+            const tarefas = await resposta.json();
+
+            divLista.innerHTML = '';
+
+            if (tarefas.length === 0) {
+                divLista.innerHTML = '<p style="text-align: center; color: #888;">Nenhuma tarefa encontrada. Adicione uma acima!</p>';
+                return;
+            }
+
+            tarefas.forEach(tarefa => {
+                const isConcluida = tarefa.status === 'concluído';
+                const classeStatus = isConcluida ? 'tarefa concluida' : 'tarefa';
+                
+                divLista.innerHTML += `
+                    <div class="${classeStatus}">
+                        <div class="tarefa-header">
+                            <span class="titulo">${tarefa.titulo}</span>
+                            <small>Impacto: ${tarefa.impacto} | Prazo: ${tarefa.prazo}</small>
+                        </div>
+                        <p style="margin: 5px 0 0 0; font-size: 14px; color: #555;">${tarefa.descricao}</p>
+                        
+                        <div class="botoes-acao">
+                            ${!isConcluida ? `<button class="btn-pequeno btn-concluir" onclick="concluirTarefa(${tarefa.id})">✔ Concluir</button>` : ''}
+                            <button class="btn-pequeno btn-remover" onclick="removerTarefa(${tarefa.id})">🗑 Remover</button>
+                        </div>
+                    </div>
+                `;
+            });
+        } catch (erro) {
+            console.error("Erro ao buscar tarefas:", erro);
+            divLista.innerHTML = '<p style="text-align: center; color: red;">Erro ao conectar com a API. O servidor FastAPI está rodando?</p>';
+        }
+    }
+</script>
+
+</body>
+</html>

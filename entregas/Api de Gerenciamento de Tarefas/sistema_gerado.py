@@ -5,12 +5,25 @@ from typing import List, Optional
 from enum import Enum
 
 from fastapi import FastAPI, HTTPException, Query, Depends
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import PlainTextResponse, FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict, field_validator, ValidationError
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 SISTEMA_DB_PATH = "tarefas.db"
 app = FastAPI(title="API de Gerenciamento de Tarefas com Prioridade")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/", response_class=FileResponse, include_in_schema=False)
+def serve_frontend():
+    return FileResponse("index.html")
 
 # Enum para status das tarefas
 class Status(str, Enum):
@@ -177,6 +190,15 @@ def atualizar_tarefa(id: int, tarefa_update: TarefaUpdate, session: Session = De
     session.refresh(tarefa)
     return tarefa
 
+@app.delete("/tarefas/{id}", status_code=204)
+def deletar_tarefa(id: int, session: Session = Depends(get_session)):
+    tarefa = session.get(Tarefa, id)
+    if not tarefa:
+        raise HTTPException(status_code=404, detail="Tarefa não encontrada")
+    session.delete(tarefa)
+    session.commit()
+    return None
+
 # ------------------------------------------
 # Mensagem no terminal quando executado diretamente
 # ------------------------------------------
@@ -226,7 +248,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.serve:
         import uvicorn
-        uvicorn.run("output.sistema_gerado:app", host="0.0.0.0", port=8000, reload=False)
+        uvicorn.run("sistema_gerado:app", host="0.0.0.0", port=8000, reload=False)
     else:
         main()
         sys.exit(0)
