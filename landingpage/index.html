@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentix Vault — Entregas e Métricas da Fábrica</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Repositório de entregas e métricas agregadas da Fábrica de Agentes IA (JSON/CSV via GitHub Pages).">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Agentix Vault — Entregas e Métricas da Fábrica">
+    <meta property="og:description" content="Repositório de entregas e métricas agregadas da Fábrica de Agentes IA (JSON/CSV via GitHub Pages).">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Agentix Vault — Entregas e Métricas da Fábrica">
+    <meta property="twitter:description" content="Repositório de entregas e métricas agregadas da Fábrica de Agentes IA (JSON/CSV via GitHub Pages).">
+</head>
+<body>
+    <header>
+        <div class="container flex-space">
+            <a href="#" class="logo" aria-label="Agentix Vault home">
+                <span class="logo-icon pulse-dot"></span> Agentix <span>Vault</span>
+            </a>
+            <nav aria-label="Navegação principal">
+                <ul class="nav-list">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#metricas">Métricas</a></li>
+                    <li><a href="#integracoes">Integrações</a></li>
+                    <li><a href="#seguranca">Segurança</a></li>
+                    <li><a href="#demo">Demo</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </nav>
+            <button id="menu-toggle" class="btn-icon btn-icon-menu" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18"></path>
+                    <path d="M3 12h18"></path>
+                    <path d="M3 18h18"></path>
+                </svg>
+            </button>
+            <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema claro/escuro">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+        </div>
+        <nav id="mobile-nav" class="mobile-nav" aria-label="Navegação mobile" hidden>
+            <div class="container">
+                <ul class="mobile-nav-list">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#metricas">Métricas</a></li>
+                    <li><a href="#integracoes">Integrações</a></li>
+                    <li><a href="#seguranca">Segurança</a></li>
+                    <li><a href="#demo">Demo</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section id="hero" class="section-hero">
+            <div class="container grid-2">
+                <div class="hero-content">
+                    <h1>Entregas e métricas, prontas para consumo.</h1>
+                    <p class="hero-sub">O Agentix Vault versiona as entregas geradas pela fábrica e publica métricas agregadas em <strong>JSON</strong> e <strong>CSV</strong> via GitHub Pages — perfeito para monitoramento e BI.</p>
+                    <div class="hero-cta flex-center-mobile">
+                        <a href="#demo" class="btn btn-primary">Ver Demo</a>
+                        <a href="https://github.com/EddieDevLife/agentix-vault" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Abrir Repositório</a>
+                    </div>
+                </div>
+                <div class="hero-mock" aria-hidden="true">
+                    <!-- Mock de dashboard SVG -->
+                    <svg viewBox="0 0 400 250" class="mock-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="10" y="10" width="180" height="60" rx="8" class="mock-card" />
+                        <circle cx="40" cy="40" r="15" class="mock-icon"/>
+                        <rect x="65" y="30" width="100" height="8" rx="4" class="mock-text"/>
+                        <rect x="65" y="45" width="60" height="6" rx="3" class="mock-text-light"/>
+
+                        <rect x="210" y="10" width="180" height="60" rx="8" class="mock-card"/>
+                        <circle cx="240" cy="40" r="15" class="mock-icon"/>
+                        <rect x="265" y="30" width="100" height="8" rx="4" class="mock-text"/>
+                        <rect x="265" y="45" width="60" height="6" rx="3" class="mock-text-light"/>
+
+                        <rect x="10" y="90" width="380" height="150" rx="8" class="mock-card"/>
+                        <rect x="30" y="110" width="60" height="6" rx="3" class="mock-text-light"/>
+                        <rect x="30" y="130" width="340" height="4" rx="2" class="mock-timeline"/>
+                        <circle cx="80" cy="132" r="6" class="mock-dot"/>
+                        <circle cx="180" cy="132" r="6" class="mock-dot"/>
+                        <circle cx="280" cy="132" r="6" class="mock-dot accent-dot"/>
+
+                        <rect x="30" y="150" width="150" height="6" rx="3" class="mock-text-light"/>
+                        <rect x="30" y="165" width="100" height="6" rx="3" class="mock-text-light"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMO FUNCIONA -->
+        <section id="features">
+            <div class="container">
+                <h2>Como funciona a <span>Fábrica de Agentes</span></h2>
+                <div class="triple-grid">
+                    <div class="feature-card">
+                        <h3>🐝 Hive</h3>
+                        <p>Agentes de IA trabalham em tarefas complexas e emitem eventos a cada passo: início, progresso, conclusão ou bloqueio.</p>
+                        <span class="badge badge-idle">Emitindo eventos</span>
+                    </div>
+                    <div class="feature-card highlight">
+                        <h3>📡 Pulse</h3>
+                        <p>A sala de controle que consome os eventos em tempo real. Monitore status, timeline de mensagens e métricas de execução.</p>
+                        <span class="badge badge-working">Dashboard vivo</span>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🔐 Vault</h3>
+                        <p>O cofre de entregas. Código validado, métricas agregadas e artefatos prontos para deploy ou análise de qualidade.</p>
+                        <span class="badge badge-done">Outputs seguros</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MÉTRICAS MONITORADAS -->
+        <section id="metricas">
+            <div class="container">
+                <h2>Métricas que a sala de controle <span>entrega</span></h2>
+                <div class="metrics-grid">
+                    <div class="metric-card"><span class="metric-icon">✅</span><strong>Status do agente</strong><small>Idle, Thinking, Working, Done</small></div>
+                    <div class="metric-card"><span class="metric-icon">💰</span><strong>Custo estimado</strong><small>Baseado em tokens e tempo de uso</small></div>
+                    <div class="metric-card"><span class="metric-icon">📊</span><strong>Tokens</strong><small>Prompt + completion por run</small></div>
+                    <div class="metric-card"><span class="metric-icon">⏱️</span><strong>Tempo decorrido</strong><small>Do primeiro evento à entrega final</small></div>
+                    <div class="metric-card"><span class="metric-icon">🔍</span><strong>QA rounds</strong><small>Rodadas de validação antes do aceite</small></div>
+                    <div class="metric-card"><span class="metric-icon">🧪</span><strong>Validação</strong><small>Passou nos checks definidos?</small></div>
+                    <div class="metric-card"><span class="metric-icon">🤖</span><strong>Modelos/LLMs</strong><small>Qual engine foi usada na execução</small></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTEGRAÇÕES -->
+        <section id="integracoes">
+            <div class="container text-center">
+                <h2>Conecte com seu ecossistema de <span>dados</span></h2>
+                <p class="subtitle">O Agentix Vault publica métricas em <strong>JSON</strong> e <strong>CSV</strong> via GitHub Pages. Pronto para consumir no <strong>Tableau</strong>, <strong>Databricks</strong> ou <strong>Deepnote</strong>.</p>
+                <p class="subtitle">Ou faça ingest em Postgres (gratuito no Neon) e monte seus próprios dashboards.</p>
+            </div>
+        </section>
+
+        <!-- ARQUITETURA E SEGURANÇA -->
+        <section id="seguranca">
+            <div class="container">
+                <h2>Arquitetura pensada para <span>confiança</span></h2>
+                <ul class="security-list">
+                    <li><strong>🔒 CSP e Headers</strong> — Content Security Policy restritiva e headers de segurança por padrão.</li>
+                    <li><strong>🐢 Rate Limiting</strong> — Proteção contra abusos na API de monitoramento.</li>
+                    <li><strong>📋 Logs estruturados</strong> — Tudo em JSON para auditoria e debug eficiente.</li>
+                    <li><strong>🔑 Menor privilégio</strong> — Cada módulo (Hive, Pulse, Vault) opera com o mínimo de acesso necessário.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DEMO (DADOS REAIS) -->
+        <section id="demo">
+            <div class="container">
+                <h2>Demo ao vivo do <span>Vault</span></h2>
+                <p class="subtitle">Dados puxados em tempo real de <a href="./deliveries_index.json" target="_blank" rel="noopener noreferrer">deliveries_index.json</a> (e <a href="./artifacts.html" target="_blank" rel="noopener noreferrer">artifacts</a>)</p>
+                <div id="demo-stats" class="demo-stats" aria-live="polite">
+                    <!-- Preenchido por JS -->
+                    <div class="skeleton-card">Carregando métricas...</div>
+                </div>
+                <div id="demo-table-container" class="demo-table-container">
+                    <h3>Últimas 5 entregas</h3>
+                    <div id="demo-list" class="demo-list">
+                        <!-- Preenchido por JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq">
+            <div class="container">
+                <h2>Perguntas <span>frequentes</span></h2>
+                <div class="faq-list">
+                    <details class="faq-item"><summary>Preciso hospedar um backend?</summary><p>Não. O Vault publica métricas como arquivos estáticos (GitHub Pages). Você consome os dados direto via URL em qualquer ferramenta de BI.</p></details>
+                    <details class="faq-item"><summary>Como publico entregas e métricas?</summary><p>O pipeline (GitHub Actions) processa o conteúdo em <code>entregas/</code> e publica os artefatos em <code>site/</code>, incluindo <code>deliveries_index.json</code> e <code>runs.csv</code>.</p></details>
+                    <details class="faq-item"><summary>Isso funciona localmente?</summary><p>Sim. Você pode rodar o exportador localmente para gerar <code>site/</code> e testar a landing page apontando para o arquivo gerado.</p></details>
+                    <details class="faq-item"><summary>Onde encontro os arquivos prontos?</summary><p>No GitHub Pages do repositório: <code>site/deliveries_index.json</code> (JSON) e <code>site/runs.csv</code> (CSV). Você pode linkar direto do seu dashboard.</p></details>
+                    <details class="faq-item"><summary>Como evoluir para produção?</summary><p>Deixe o Vault publicando via GitHub Pages e, se precisar de histórico/BI avançado, habilite ingest em Postgres (Neon). Para observabilidade em tempo real, conecte um dashboard (Pulse) consumindo os endpoints do Vault.</p></details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container flex-space">
+            <div class="footer-links">
+                <a href="https://github.com/EddieDevLife/agentix-hive" target="_blank" rel="noopener noreferrer">GitHub Hive</a>
+                <a href="https://github.com/EddieDevLife/agentix-vault" target="_blank" rel="noopener noreferrer">GitHub Vault</a>
+                <a href="mailto:contato@agentix.dev">contato@agentix.dev</a>
+            </div>
+            <p class="copy">&copy; 2026 Agentix. Sala de controle para fábricas inteligentes.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

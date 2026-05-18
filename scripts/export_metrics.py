@@ -11,6 +11,7 @@ from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 DELIVERIES_DIR = ROOT / "entregas"
+LANDINGPAGE_DIR = ROOT / "landingpage"
 
 
 def utc_now_iso() -> str:
@@ -245,15 +246,15 @@ def export_site(out_dir: Path) -> None:
                 }
             )
 
-    # A tiny index.html for quick browsing
-    (out_dir / "index.html").write_text(
+    # Preserve a simple artifacts listing for direct downloads.
+    (out_dir / "artifacts.html").write_text(
         "\n".join(
             [
                 "<!doctype html>",
                 "<meta charset='utf-8'/>",
                 "<meta name='viewport' content='width=device-width, initial-scale=1'/>",
-                "<title>agentix-vault metrics</title>",
-                "<pre>Artifacts:</pre>",
+                "<title>agentix-vault artifacts</title>",
+                "<h1>Artifacts</h1>",
                 "<ul>",
                 "<li><a href='./deliveries_index.json'>deliveries_index.json</a></li>",
                 "<li><a href='./runs.csv'>runs.csv</a></li>",
@@ -264,6 +265,28 @@ def export_site(out_dir: Path) -> None:
         encoding="utf-8",
     )
 
+    # Publish the landing page as the Pages root (index.html) alongside the artifacts.
+    if LANDINGPAGE_DIR.exists():
+        for name in ("index.html", "style.css", "main.js"):
+            src = LANDINGPAGE_DIR / name
+            if src.exists() and src.is_file():
+                (out_dir / name).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+    else:
+        # Fallback: keep an index if landingpage/ isn't present.
+        (out_dir / "index.html").write_text(
+            "\n".join(
+                [
+                    "<!doctype html>",
+                    "<meta charset='utf-8'/>",
+                    "<meta name='viewport' content='width=device-width, initial-scale=1'/>",
+                    "<title>agentix-vault artifacts</title>",
+                    "<p>Landing page not found. See <a href='./artifacts.html'>artifacts</a>.</p>",
+                ]
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+
 
 def main() -> None:
     out_dir = Path(os.getenv("OUTPUT_DIR", "")).resolve() if os.getenv("OUTPUT_DIR") else ROOT / "site"
@@ -273,4 +296,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
