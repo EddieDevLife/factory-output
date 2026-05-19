@@ -1,206 +1,1150 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="dark">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agentix Vault — Entregas e Métricas da Fábrica</title>
-    <link rel="stylesheet" href="style.css">
-    <meta name="description" content="Repositório de entregas e métricas agregadas da Fábrica de Agentes IA (JSON/CSV via GitHub Pages).">
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Agentix Vault — Entregas e Métricas da Fábrica">
-    <meta property="og:description" content="Repositório de entregas e métricas agregadas da Fábrica de Agentes IA (JSON/CSV via GitHub Pages).">
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Agentix Vault — Entregas e Métricas da Fábrica">
-    <meta property="twitter:description" content="Repositório de entregas e métricas agregadas da Fábrica de Agentes IA (JSON/CSV via GitHub Pages).">
+    <title>Agentix — A Revolução da Engenharia de Dados Assistida por IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-card: #16161a;
+            --bg-card-hover: #1c1c21;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+            --border-light: #3f3f46;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-orange: #f97316;
+            --accent-pink: #ec4899;
+            --gradient-1: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+            --gradient-2: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+            --gradient-3: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
+            --glow-blue: 0 0 60px rgba(59, 130, 246, 0.3);
+            --glow-purple: 0 0 60px rgba(139, 92, 246, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 11, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-nav {
+            padding: 10px 20px;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-purple);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 80px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            background: linear-gradient(to right, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 16px 32px;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow-purple);
+        }
+
+        .btn-secondary {
+            padding: 16px 32px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-light);
+            transform: translateY(-3px);
+        }
+
+        /* ===== METRICS BAR ===== */
+        .metrics-bar {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            text-align: center;
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .metric-value {
+            font-size: 48px;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 64px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== COMPONENTS GRID ===== */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .component-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .component-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .component-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-4px);
+        }
+
+        .component-card:hover::before {
+            opacity: 1;
+        }
+
+        .component-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .component-icon.blue { background: rgba(59, 130, 246, 0.15); }
+        .component-icon.purple { background: rgba(139, 92, 246, 0.15); }
+        .component-icon.green { background: rgba(16, 185, 129, 0.15); }
+
+        .component-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .component-card .subtitle {
+            font-size: 13px;
+            color: var(--accent-blue);
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .component-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            color: var(--accent-green);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* ===== FLOW SECTION ===== */
+        .flow-section {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            position: relative;
+        }
+
+        .flow-steps::before {
+            content: '';
+            position: absolute;
+            top: 48px;
+            left: 16.66%;
+            right: 16.66%;
+            height: 2px;
+            background: var(--gradient-1);
+            opacity: 0.3;
+        }
+
+        .flow-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .flow-step h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .flow-step p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* ===== BENEFITS ===== */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .benefit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            display: flex;
+            gap: 20px;
+            transition: all 0.3s;
+        }
+
+        .benefit-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .benefit-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .benefit-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* ===== FUTURE ===== */
+        .future-section {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .future-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .future-card:hover {
+            border-color: var(--border-light);
+        }
+
+        .future-card .icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .future-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .future-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-content p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-pillars {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 60px;
+        }
+
+        .pillar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pillar-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .pillar span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .components-grid,
+            .flow-steps,
+            .future-grid {
+                grid-template-columns: 1fr;
+            }
+            .flow-steps::before { display: none; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 40px; }
+            .hero-subtitle { font-size: 18px; }
+            .metrics-grid { grid-template-columns: 1fr; gap: 32px; }
+            .cta-pillars { gap: 24px; }
+            .footer-content { flex-direction: column; gap: 20px; text-align: center; }
+            .footer-links { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container flex-space">
-            <a href="#" class="logo" aria-label="Agentix Vault home">
-                <span class="logo-icon pulse-dot"></span> Agentix <span>Vault</span>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">🧩</div>
+                <span>Agentix</span>
             </a>
-            <nav aria-label="Navegação principal">
-                <ul class="nav-list">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#metricas">Métricas</a></li>
-                    <li><a href="#integracoes">Integrações</a></li>
-                    <li><a href="#seguranca">Segurança</a></li>
-                    <li><a href="#demo">Demo</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                </ul>
-            </nav>
-            <button id="menu-toggle" class="btn-icon btn-icon-menu" aria-label="Abrir menu" aria-controls="mobile-nav" aria-expanded="false">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 6h18"></path>
-                    <path d="M3 12h18"></path>
-                    <path d="M3 18h18"></path>
-                </svg>
-            </button>
-            <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema claro/escuro">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            </button>
+            <ul class="nav-links">
+                <li><a href="#componentes">Componentes</a></li>
+                <li><a href="#fluxo">Fluxo</a></li>
+                <li><a href="#beneficios">Benefícios</a></li>
+                <li><a href="#futuro">Futuro</a></li>
+            </ul>
+            <a href="https://github.com/EddieDevLife" class="btn-nav" target="_blank">GitHub</a>
         </div>
-        <nav id="mobile-nav" class="mobile-nav" aria-label="Navegação mobile" hidden>
-            <div class="container">
-                <ul class="mobile-nav-list">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#metricas">Métricas</a></li>
-                    <li><a href="#integracoes">Integrações</a></li>
-                    <li><a href="#seguranca">Segurança</a></li>
-                    <li><a href="#demo">Demo</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    </nav>
 
-    <main>
-        <!-- HERO -->
-        <section id="hero" class="section-hero">
-            <div class="container grid-2">
-                <div class="hero-content">
-                    <h1>Entregas e métricas, prontas para consumo.</h1>
-                    <p class="hero-sub">O Agentix Vault versiona as entregas geradas pela fábrica e publica métricas agregadas em <strong>JSON</strong> e <strong>CSV</strong> via GitHub Pages — perfeito para monitoramento e BI.</p>
-                    <div class="hero-cta flex-center-mobile">
-                        <a href="#demo" class="btn btn-primary">Ver Demo</a>
-                        <a href="https://github.com/EddieDevLife/agentix-vault" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Abrir Repositório</a>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span>Ecossistema ativo — v2.0</span>
+            </div>
+            <h1>
+                A Revolução da<br>
+                <span class="gradient-text">Engenharia de Dados</span><br>
+                Assistida por IA
+            </h1>
+            <p class="hero-subtitle">
+                O Agentix une três pilares fundamentais — <strong>Ação</strong>, <strong>Auditoria</strong> e <strong>Visão</strong> — para transformar a maneira como equipes constroem, validam e monitoram pipelines de dados com inteligência artificial.
+            </p>
+            <div class="hero-cta">
+                <a href="#componentes" class="btn-primary">Explorar Ecossistema ↓</a>
+                <a href="https://github.com/EddieDevLife" class="btn-secondary" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 2.606.962.754-.209 1.562-.314 2.371-.32 1.242.006 2.371.918 2.371 2.371 0 1.714-.003 3.091-.007 3.515 0 .342.228.739.772.637 2.853-.983 4.923-2.723 4.923-5.162 0-1.138-.405-2.069-1.071-2.802.109-.261.471-1.315-.106-2.737 0 0-.87-.278-1.914.202-.557-.174-1.155-.265-1.753-.269.151-.366.426-.737.776-1.005-2.689-.306-5.464-1.343-5.464-5.924 0-1.303.465-2.356 1.224-3.193-.121-.297-.513-1.194.112-2.487 0 0 .799-.255 2.618.969.756-.21 1.561-.316 2.37-.322 1.245.007 2.375.92 2.375 2.375 0 1.712-.004 3.087-.008 3.511 0 .34.226.735.768.633 2.846-.982 4.912-2.721 4.912-5.16 0-1.136-.403-2.067-1.068-2.8 0 0-.868-.276-1.911.199-.555-.172-1.151-.263-1.747-.267.149-.358.42-.726.765-.992z"/></svg>
+                    Ver Repositórios
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- METRICS BAR -->
+    <div class="metrics-bar" id="metrics-bar">
+        <div class="container metrics-grid">
+            <div class="metric-item">
+                <div class="metric-value" id="metric-cost">$1.24</div>
+                <div class="metric-label">Custo Estimado por Run</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-value" id="metric-tokens">42k</div>
+                <div class="metric-label">Tokens Processados</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-value" id="metric-efficiency">89%</div>
+                <div class="metric-label">Eficiência Média</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COMPONENTES -->
+    <section id="componentes">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Ecossistema</span>
+                <h2>Três Pilares, Uma Plataforma</h2>
+                <p>Cada componente resolve uma parte do quebra-cabeça da engenharia de dados assistida por IA.</p>
+            </div>
+
+            <div class="components-grid">
+                <!-- HIVE -->
+                <div class="component-card">
+                    <div class="component-icon blue">🐝</div>
+                    <div class="subtitle">O Cérebro Executor</div>
+                    <h3>Agentix-Hive</h3>
+                    <p>Orquestração autônoma de agentes inteligentes que colaboram para gerar código de alta qualidade.</p>
+                    <ul class="feature-list">
+                        <li>Agentes especializados (Architect, Dev, QA) em sincronia</li>
+                        <li>Criação de queries SQL e jobs Spark otimizados</li>
+                        <li>Ciclos automáticos de retrabalho com validação</li>
+                        <li>Publicação automática de entregas</li>
+                    </ul>
+                </div>
+
+                <!-- DATALINEAGE -->
+                <div class="component-card">
+                    <div class="component-icon purple">🔍</div>
+                    <div class="subtitle">O Auditor de Integridade</div>
+                    <h3>DataLineage AI</h3>
+                    <p>Análise profunda de semântica SQL e rastreamento de dependências com Claude 3.5 Sonnet.</p>
+                    <ul class="feature-list">
+                        <li>Mapeamento de fluxo de dados entre tabelas e colunas</li>
+                        <li>Detecção instantânea de quebras de contrato</li>
+                        <li>Auditoria de segurança e políticas de acesso</li>
+                        <li>Dual Engine: IA + parser local</li>
+                    </ul>
+                </div>
+
+                <!-- PULSE -->
+                <div class="component-card">
+                    <div class="component-icon green">📡</div>
+                    <div class="subtitle">O Monitor Visual</div>
+                    <h3>Agentix-Pulse</h3>
+                    <p>Observabilidade em tempo real do raciocínio dos agentes com métricas de execução e data flow.</p>
+                    <ul class="feature-list">
+                        <li>Timeline de conversas e logs integrados</li>
+                        <li>Controle de custos, tokens e tempo de execução</li>
+                        <li>Visualização nativa de linhagem de dados</li>
+                        <li>Dashboard de histórico com health scores</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLUXO -->
+    <section id="fluxo" class="flow-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Fluxo de Trabalho</span>
+                <h2>Um Ciclo Contínuo de Inteligência</h2>
+                <p>Ação, auditoria e visão unidos em uma única plataforma automatizada.</p>
+            </div>
+
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <h3>Geração</h3>
+                    <p>O Agentix-Hive propõe uma solução de dados e gera as queries SQL necessárias com seus agentes especializados.</p>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <h3>Auditoria</h3>
+                    <p>O DataLineage AI valida a proposta instantaneamente, mapeando linhagem e garantindo a integridade dos dados.</p>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <h3>Exibição</h3>
+                    <p>O Agentix-Pulse reflete o progresso e o mapa de dados em tempo real para total transparência.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFÍCIOS -->
+    <section id="beneficios">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Benefícios</span>
+                <h2>Por Que Escolher o Agentix?</h2>
+                <p>Resultados tangíveis para equipes que buscam escala com governança.</p>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background: rgba(16, 185, 129, 0.15);">💰</div>
+                    <div>
+                        <h3>Redução de Custos</h3>
+                        <p>Monitoramento em tempo real evita gastos excessivos de API e otimiza o uso de tokens em cada execução.</p>
                     </div>
                 </div>
-                <div class="hero-mock" aria-hidden="true">
-                    <!-- Mock de dashboard SVG -->
-                    <svg viewBox="0 0 400 250" class="mock-svg" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="10" y="10" width="180" height="60" rx="8" class="mock-card" />
-                        <circle cx="40" cy="40" r="15" class="mock-icon"/>
-                        <rect x="65" y="30" width="100" height="8" rx="4" class="mock-text"/>
-                        <rect x="65" y="45" width="60" height="6" rx="3" class="mock-text-light"/>
-
-                        <rect x="210" y="10" width="180" height="60" rx="8" class="mock-card"/>
-                        <circle cx="240" cy="40" r="15" class="mock-icon"/>
-                        <rect x="265" y="30" width="100" height="8" rx="4" class="mock-text"/>
-                        <rect x="265" y="45" width="60" height="6" rx="3" class="mock-text-light"/>
-
-                        <rect x="10" y="90" width="380" height="150" rx="8" class="mock-card"/>
-                        <rect x="30" y="110" width="60" height="6" rx="3" class="mock-text-light"/>
-                        <rect x="30" y="130" width="340" height="4" rx="2" class="mock-timeline"/>
-                        <circle cx="80" cy="132" r="6" class="mock-dot"/>
-                        <circle cx="180" cy="132" r="6" class="mock-dot"/>
-                        <circle cx="280" cy="132" r="6" class="mock-dot accent-dot"/>
-
-                        <rect x="30" y="150" width="150" height="6" rx="3" class="mock-text-light"/>
-                        <rect x="30" y="165" width="100" height="6" rx="3" class="mock-text-light"/>
-                    </svg>
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background: rgba(59, 130, 246, 0.15);">✅</div>
+                    <div>
+                        <h3>Qualidade Garantida</h3>
+                        <p>Auditoria de linhagem automática reduz drasticamente erros de lógica em produção com validação contínua.</p>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- COMO FUNCIONA -->
-        <section id="features">
-            <div class="container">
-                <h2>Como funciona a <span>Fábrica de Agentes</span></h2>
-                <div class="triple-grid">
-                    <div class="feature-card">
-                        <h3>🐝 Hive</h3>
-                        <p>Agentes de IA trabalham em tarefas complexas e emitem eventos a cada passo: início, progresso, conclusão ou bloqueio.</p>
-                        <span class="badge badge-idle">Emitindo eventos</span>
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background: rgba(139, 92, 246, 0.15);">👁️</div>
+                    <div>
+                        <h3>Transparência Total</h3>
+                        <p>Visibilidade completa do raciocínio da IA, permitindo auditoria humana quando necessário.</p>
                     </div>
-                    <div class="feature-card highlight">
-                        <h3>📡 Pulse</h3>
-                        <p>A sala de controle que consome os eventos em tempo real. Monitore status, timeline de mensagens e métricas de execução.</p>
-                        <span class="badge badge-working">Dashboard vivo</span>
-                    </div>
-                    <div class="feature-card">
-                        <h3>🔐 Vault</h3>
-                        <p>O cofre de entregas. Código validado, métricas agregadas e artefatos prontos para deploy ou análise de qualidade.</p>
-                        <span class="badge badge-done">Outputs seguros</span>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon" style="background: rgba(249, 115, 22, 0.15);">🚀</div>
+                    <div>
+                        <h3>Escalabilidade</h3>
+                        <p>Pronto para escalar sua fábrica de software com governança e segurança de dados enterprise.</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- MÉTRICAS MONITORADAS -->
-        <section id="metricas">
-            <div class="container">
-                <h2>Métricas que a sala de controle <span>entrega</span></h2>
-                <div class="metrics-grid">
-                    <div class="metric-card"><span class="metric-icon">✅</span><strong>Status do agente</strong><small>Idle, Thinking, Working, Done</small></div>
-                    <div class="metric-card"><span class="metric-icon">💰</span><strong>Custo estimado</strong><small>Baseado em tokens e tempo de uso</small></div>
-                    <div class="metric-card"><span class="metric-icon">📊</span><strong>Tokens</strong><small>Prompt + completion por run</small></div>
-                    <div class="metric-card"><span class="metric-icon">⏱️</span><strong>Tempo decorrido</strong><small>Do primeiro evento à entrega final</small></div>
-                    <div class="metric-card"><span class="metric-icon">🔍</span><strong>QA rounds</strong><small>Rodadas de validação antes do aceite</small></div>
-                    <div class="metric-card"><span class="metric-icon">🧪</span><strong>Validação</strong><small>Passou nos checks definidos?</small></div>
-                    <div class="metric-card"><span class="metric-icon">🤖</span><strong>Modelos/LLMs</strong><small>Qual engine foi usada na execução</small></div>
+    <!-- FUTURO -->
+    <section id="futuro" class="future-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Roadmap</span>
+                <h2>O Futuro do Agentix</h2>
+                <p>Funcionalidades que estão no horizonte para tornar o ecossistema ainda mais poderoso.</p>
+            </div>
+
+            <div class="future-grid">
+                <div class="future-card">
+                    <div class="icon">📊</div>
+                    <h3>Unity Catalog</h3>
+                    <p>Sincronização profunda com Databricks para governança de dados nativa e linhagem persistente.</p>
+                </div>
+                <div class="future-card">
+                    <div class="icon">🧠</div>
+                    <h3>Predição de Bugs</h3>
+                    <p>Modelos preditivos que analisam o histórico para antecipar falhas antes do QA.</p>
+                </div>
+                <div class="future-card">
+                    <div class="icon">🔐</div>
+                    <h3>Governança Enterprise</h3>
+                    <p>Autenticação unificada, controle de acesso granular e trilhas de auditoria corporativas.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- INTEGRAÇÕES -->
-        <section id="integracoes">
-            <div class="container text-center">
-                <h2>Conecte com seu ecossistema de <span>dados</span></h2>
-                <p class="subtitle">O Agentix Vault publica métricas em <strong>JSON</strong> e <strong>CSV</strong> via GitHub Pages. Pronto para consumir no <strong>Tableau</strong>, <strong>Databricks</strong> ou <strong>Deepnote</strong>.</p>
-                <p class="subtitle">Ou faça ingest em Postgres (gratuito no Neon) e monte seus próprios dashboards.</p>
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container cta-content">
+            <h2>Pronto para o <span class="gradient-text">Futuro</span>?</h2>
+            <p>O Agentix une o melhor da IA generativa com a governança de dados rigorosa. Escale sua fábrica de software com inteligência e segurança.</p>
+            <div class="hero-cta">
+                <a href="https://github.com/EddieDevLife" class="btn-primary" target="_blank">Começar Agora →</a>
+                <a href="mailto:contato@agentix.dev" class="btn-secondary">Falar com Equipe</a>
             </div>
-        </section>
 
-        <!-- ARQUITETURA E SEGURANÇA -->
-        <section id="seguranca">
-            <div class="container">
-                <h2>Arquitetura pensada para <span>confiança</span></h2>
-                <ul class="security-list">
-                    <li><strong>🔒 CSP e Headers</strong> — Content Security Policy restritiva e headers de segurança por padrão.</li>
-                    <li><strong>🐢 Rate Limiting</strong> — Proteção contra abusos na API de monitoramento.</li>
-                    <li><strong>📋 Logs estruturados</strong> — Tudo em JSON para auditoria e debug eficiente.</li>
-                    <li><strong>🔑 Menor privilégio</strong> — Cada módulo (Hive, Pulse, Vault) opera com o mínimo de acesso necessário.</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- DEMO (DADOS REAIS) -->
-        <section id="demo">
-            <div class="container">
-                <h2>Demo ao vivo do <span>Vault</span></h2>
-                <p class="subtitle">Dados puxados em tempo real de <a href="./deliveries_index.json" target="_blank" rel="noopener noreferrer">deliveries_index.json</a> (e <a href="./artifacts.html" target="_blank" rel="noopener noreferrer">artifacts</a>)</p>
-                <div id="demo-stats" class="demo-stats" aria-live="polite">
-                    <!-- Preenchido por JS -->
-                    <div class="skeleton-card">Carregando métricas...</div>
+            <div class="cta-pillars">
+                <div class="pillar">
+                    <div class="pillar-icon">⚡</div>
+                    <span>AÇÃO</span>
                 </div>
-                <div id="demo-table-container" class="demo-table-container">
-                    <h3>Últimas 5 entregas</h3>
-                    <div id="demo-list" class="demo-list">
-                        <!-- Preenchido por JS -->
-                    </div>
+                <div class="pillar">
+                    <div class="pillar-icon">🛡️</div>
+                    <span>AUDITORIA</span>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-icon">👁️</div>
+                    <span>VISÃO</span>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- FAQ -->
-        <section id="faq">
-            <div class="container">
-                <h2>Perguntas <span>frequentes</span></h2>
-                <div class="faq-list">
-                    <details class="faq-item"><summary>Preciso hospedar um backend?</summary><p>Não. O Vault publica métricas como arquivos estáticos (GitHub Pages). Você consome os dados direto via URL em qualquer ferramenta de BI.</p></details>
-                    <details class="faq-item"><summary>Como publico entregas e métricas?</summary><p>O pipeline (GitHub Actions) processa o conteúdo em <code>entregas/</code> e publica os artefatos em <code>site/</code>, incluindo <code>deliveries_index.json</code> e <code>runs.csv</code>.</p></details>
-                    <details class="faq-item"><summary>Isso funciona localmente?</summary><p>Sim. Você pode rodar o exportador localmente para gerar <code>site/</code> e testar a landing page apontando para o arquivo gerado.</p></details>
-                    <details class="faq-item"><summary>Onde encontro os arquivos prontos?</summary><p>No GitHub Pages do repositório: <code>site/deliveries_index.json</code> (JSON) e <code>site/runs.csv</code> (CSV). Você pode linkar direto do seu dashboard.</p></details>
-                    <details class="faq-item"><summary>Como evoluir para produção?</summary><p>Deixe o Vault publicando via GitHub Pages e, se precisar de histórico/BI avançado, habilite ingest em Postgres (Neon). Para observabilidade em tempo real, conecte um dashboard (Pulse) consumindo os endpoints do Vault.</p></details>
+    <!-- DEMO AO VIVO -->
+    <section id="demo" style="background: var(--bg-secondary); border-top: 1px solid var(--border);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Dados Reais</span>
+                <h2>Demo ao Vivo do Vault</h2>
+                <p>Dados puxados em tempo real de <a href="./deliveries_index.json" target="_blank" style="color: var(--accent-blue);">deliveries_index.json</a></p>
+            </div>
+
+            <div id="demo-stats" class="demo-stats" aria-live="polite" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
+                <div class="component-card" style="text-align: center;">
+                    <div style="font-size: 36px; font-weight: 900; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="demo-total">—</div>
+                    <div style="color: var(--text-secondary); font-size: 14px;">Entregas Totais</div>
+                </div>
+                <div class="component-card" style="text-align: center;">
+                    <div style="font-size: 36px; font-weight: 900; background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="demo-success">—</div>
+                    <div style="color: var(--text-secondary); font-size: 14px;">Taxa de Sucesso</div>
+                </div>
+                <div class="component-card" style="text-align: center;">
+                    <div style="font-size: 36px; font-weight: 900; background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" id="demo-agents">—</div>
+                    <div style="color: var(--text-secondary); font-size: 14px;">Agentes Ativos</div>
                 </div>
             </div>
-        </section>
-    </main>
 
+            <div id="demo-list" class="demo-list" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Preenchido por JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Dúvidas</span>
+                <h2>Perguntas Frequentes</h2>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
+                <details class="faq-item" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer;">
+                    <summary style="font-weight: 600; font-size: 16px; color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        Preciso hospedar um backend?
+                        <span style="font-size: 20px; color: var(--accent-blue);">+</span>
+                    </summary>
+                    <p style="margin-top: 12px; color: var(--text-secondary); font-size: 15px; line-height: 1.6;">Não. O Vault publica métricas como arquivos estáticos (GitHub Pages). Você consome os dados direto via URL em qualquer ferramenta de BI.</p>
+                </details>
+                <details class="faq-item" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer;">
+                    <summary style="font-weight: 600; font-size: 16px; color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        Como publico entregas e métricas?
+                        <span style="font-size: 20px; color: var(--accent-blue);">+</span>
+                    </summary>
+                    <p style="margin-top: 12px; color: var(--text-secondary); font-size: 15px; line-height: 1.6;">O pipeline (GitHub Actions) processa o conteúdo em <code style="background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px;">entregas/</code> e publica os artefatos em <code style="background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px;">site/</code>, incluindo <code style="background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px;">deliveries_index.json</code> e <code style="background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px;">runs.csv</code>.</p>
+                </details>
+                <details class="faq-item" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer;">
+                    <summary style="font-weight: 600; font-size: 16px; color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        Isso funciona localmente?
+                        <span style="font-size: 20px; color: var(--accent-blue);">+</span>
+                    </summary>
+                    <p style="margin-top: 12px; color: var(--text-secondary); font-size: 15px; line-height: 1.6;">Sim. Você pode rodar o exportador localmente para gerar <code style="background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px;">site/</code> e testar a landing page apontando para o arquivo gerado.</p>
+                </details>
+                <details class="faq-item" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer;">
+                    <summary style="font-weight: 600; font-size: 16px; color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                        Como evoluir para produção?
+                        <span style="font-size: 20px; color: var(--accent-blue);">+</span>
+                    </summary>
+                    <p style="margin-top: 12px; color: var(--text-secondary); font-size: 15px; line-height: 1.6;">Deixe o Vault publicando via GitHub Pages e, se precisar de histórico/BI avançado, habilite ingest em Postgres (Neon). Para observabilidade em tempo real, conecte o Agentix-Pulse consumindo os endpoints do Vault.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
     <footer>
-        <div class="container flex-space">
+        <div class="container footer-content">
             <div class="footer-links">
-                <a href="https://github.com/EddieDevLife/agentix-hive" target="_blank" rel="noopener noreferrer">GitHub Hive</a>
-                <a href="https://github.com/EddieDevLife/agentix-vault" target="_blank" rel="noopener noreferrer">GitHub Vault</a>
+                <a href="https://github.com/EddieDevLife/agentix-hive" target="_blank">Hive</a>
+                <a href="https://github.com/EddieDevLife/agentix-pulse" target="_blank">Pulse</a>
+                <a href="https://github.com/EddieDevLife/analise-de-logs-databricks" target="_blank">DataLineage</a>
                 <a href="mailto:contato@agentix.dev">contato@agentix.dev</a>
             </div>
-            <p class="copy">&copy; 2026 Agentix. Sala de controle para fábricas inteligentes.</p>
+            <p class="footer-copy">© 2026 Agentix — EddieDevLife & Manus AI</p>
         </div>
     </footer>
 
-    <script src="main.js"></script>
+    <script>
+        // Smooth scroll para links internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Animação de entrada ao scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.component-card, .benefit-card, .flow-step, .future-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // FAQ toggle animation
+        document.querySelectorAll('.faq-item summary').forEach(summary => {
+            summary.addEventListener('click', function() {
+                const icon = this.querySelector('span');
+                if (icon) {
+                    icon.textContent = this.parentElement.open ? '−' : '+';
+                }
+            });
+        });
+
+        // Fetch real Vault data
+        (async function() {
+            const API_URLS = [
+                './deliveries_index.json',
+                '../site/deliveries_index.json',
+                'https://eddiedevlife.github.io/agentix-vault/deliveries_index.json',
+                'https://eddiedevlife.github.io/agentix-vault/site/deliveries_index.json'
+            ];
+
+            async function fetchFirstOk(urls) {
+                for (const url of urls) {
+                    try {
+                        const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
+                        if (res.ok) return await res.json();
+                    } catch {}
+                }
+                return null;
+            }
+
+            try {
+                const data = await fetchFirstOk(API_URLS);
+                if (data && data.deliveries) {
+                    const deliveries = data.deliveries;
+                    const total = deliveries.length;
+                    const success = deliveries.filter(d => d.status === 'success' || d.status === 'completed').length;
+                    const successRate = total > 0 ? Math.round((success / total) * 100) : 0;
+                    const agents = new Set(deliveries.flatMap(d => d.agents || [])).size;
+
+                    // Update metrics
+                    document.getElementById('demo-total').textContent = total;
+                    document.getElementById('demo-success').textContent = successRate + '%';
+                    document.getElementById('demo-agents').textContent = agents;
+
+                    // Update hero metrics if available
+                    if (data.metrics) {
+                        const avgCost = data.metrics.avg_cost || data.metrics.total_cost / total || 1.24;
+                        const avgTokens = data.metrics.avg_tokens || 42000;
+                        document.getElementById('metric-cost').textContent = '$' + avgCost.toFixed(2);
+                        document.getElementById('metric-tokens').textContent = (avgTokens / 1000).toFixed(0) + 'k';
+                        document.getElementById('metric-efficiency').textContent = successRate + '%';
+                    }
+
+                    // Render delivery list
+                    const listEl = document.getElementById('demo-list');
+                    const recent = deliveries.slice(-5).reverse();
+                    
+                    listEl.innerHTML = recent.map(d => `
+                        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="flex: 1;">
+                                <h4 style="font-weight: 600; margin-bottom: 4px;">${d.product || d.slug || 'Sem nome'}</h4>
+                                <p style="color: var(--text-secondary); font-size: 14px;">${d.description || ''}</p>
+                                <div style="display: flex; gap: 16px; margin-top: 8px; font-size: 12px; color: var(--text-muted);">
+                                    ${d.run_number ? `<span>Run #${d.run_number}</span>` : ''}
+                                    ${d.status ? `<span>Status: ${d.status}</span>` : ''}
+                                    ${d.created_at ? `<span>${new Date(d.created_at).toLocaleDateString('pt-BR')}</span>` : ''}
+                                </div>
+                            </div>
+                            <span style="padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; background: ${d.status === 'success' || d.status === 'completed' ? 'rgba(16, 185, 129, 0.15); color: var(--accent-green);' : 'rgba(249, 115, 22, 0.15); color: var(--accent-orange);'}">
+                                ${d.status || 'unknown'}
+                            </span>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.log('Vault data unavailable, using defaults');
+            }
+        })();
+    </script>
 </body>
 </html>
